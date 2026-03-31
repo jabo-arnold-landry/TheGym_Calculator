@@ -10,7 +10,7 @@ interface InputType {
 
 interface ActionType {
   type: Str;
-  number: Str;
+  value: Str;
 }
 
 const numbers = [
@@ -39,10 +39,17 @@ export default function Calculator() {
   function reduce(state: InputType, action: ActionType) {
     switch (action.type) {
       case "add-digits":
-        const values = action.number;
+        const values = action.value;
         return {
           ...state,
-          currValue: `${state.currValue ?? ""}${values}`,
+          operand: `${state.operand ?? ""}${values}`,
+        };
+      case "operations":
+        return {
+          ...state,
+          operation: action.value,
+          currValue: state.operand,
+          operand: "",
         };
     }
   }
@@ -62,9 +69,10 @@ export default function Calculator() {
             return (
               <Button
                 onClick={(e) => {
+                  const isNum = isNaN(+e.currentTarget.textContent);
                   dispatch({
-                    type: "add-digits",
-                    number: e.currentTarget.textContent,
+                    type: isNum ? "operations" : "add-digits",
+                    value: e.currentTarget.textContent,
                   });
                 }}
                 key={index}
