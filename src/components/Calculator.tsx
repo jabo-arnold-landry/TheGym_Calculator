@@ -40,6 +40,8 @@ export default function Calculator() {
     switch (action.type) {
       case "add-digits":
         const values = action.value;
+        if (values === "0" && state.operand === "0") return state;
+        if (values === "." && state.operand.includes(".")) return state;
         return {
           ...state,
           operand: `${state.operand ?? ""}${values}`,
@@ -69,9 +71,12 @@ export default function Calculator() {
             return (
               <Button
                 onClick={(e) => {
-                  const isNum = isNaN(+e.currentTarget.textContent);
+                  const regex = /([\/\+\-\*\=])/gm;
+                  const isValidDigitElemen = regex.test(
+                    e.currentTarget.textContent,
+                  );
                   dispatch({
-                    type: isNum ? "operations" : "add-digits",
+                    type: isValidDigitElemen ? "operations" : "add-digits",
                     value: e.currentTarget.textContent,
                   });
                 }}
