@@ -1,6 +1,6 @@
 .numbers {
   display: grid;
-  grid-template-columns: 60px 60px 60px 60px;
+  grid-template-columns: repeat(4, 60px);
 }
 .zero {
   grid-column: span 2;
@@ -15,4 +15,5 @@ button {
   text-align: right;
   background-color: rgb(174, 168, 168);
   padding: 0.1em 0.9em;
+  word-break: break-all;
 }
