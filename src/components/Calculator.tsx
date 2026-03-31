@@ -10,7 +10,7 @@ interface InputType {
 
 interface ActionType {
   type: Str;
-  value: Str;
+  value?: Str;
 }
 
 const numbers = [
@@ -46,12 +46,20 @@ export default function Calculator() {
           ...state,
           operand: `${state.operand ?? ""}${values}`,
         };
+        
       case "operations":
         return {
           ...state,
           operation: action.value,
           currValue: state.operand,
           operand: "",
+        };
+
+      case "clear":
+        return {
+          currValue: "",
+          operand: "",
+          operation: "",
         };
     }
   }
@@ -71,6 +79,10 @@ export default function Calculator() {
             return (
               <Button
                 onClick={(e) => {
+                  if (e.currentTarget.textContent === "AC")
+                    return dispatch({
+                      type: "clear",
+                    });
                   const regex = /([\/\+\-\*\=])/gm;
                   const isValidDigitElemen = regex.test(
                     e.currentTarget.textContent,
@@ -81,6 +93,7 @@ export default function Calculator() {
                   });
                 }}
                 key={index}
+                value={number}
                 className={clsx(number === "0" && "zero")}
               >
                 {number}
