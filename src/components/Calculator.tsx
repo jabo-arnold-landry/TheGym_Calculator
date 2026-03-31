@@ -1,33 +1,69 @@
 import Button from "./UI/Button";
 import { clsx } from "clsx";
 import { useReducer } from "react";
-import { type UnknowObj } from "../types";
-const numbers = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "."];
+import { type Str } from "../types";
+interface InputType {
+  currValue: Str;
+  operation: Str;
+  operand: Str;
+}
+
+interface ActionType {
+  type: Str;
+  number: Str;
+}
+
+const numbers = [
+  "AC",
+  "+/-",
+  "%",
+  "/",
+  "7",
+  "8",
+  "9",
+  "x",
+  "4",
+  "5",
+  "6",
+  "-",
+  "1",
+  "2",
+  "3",
+  "+",
+  "0",
+  ".",
+  "=",
+];
 
 export default function Calculator() {
-  function reduce(state: UnknowObj, action: UnknowObj) {
+  function reduce(state: InputType, action: ActionType) {
     switch (action.type) {
-      case "add":
+      case "add-digits":
+        const values = action.number;
         return {
           ...state,
-          currValue: action.number,
+          currValue: `${state.currValue ?? ""}${values}`,
         };
     }
   }
-  const [data, dispatch] = useReducer(reduce, { currValue: "0" });
+  const [{ currValue, operation, operand }, dispatch] = useReducer(reduce, {});
   return (
     <>
       <main>
-        <div className="input-section">
-          <p>{data.currValue}</p>
-        </div>
         <div className="numbers">
+          <div className="output">
+            <div className="firstvalue-operand">
+              {currValue} {operation}
+            </div>
+            <div className="currvalue-operand">{operand}</div>
+          </div>
+
           {numbers.map((number, index) => {
             return (
               <Button
                 onClick={(e) => {
                   dispatch({
-                    type: "add",
+                    type: "add-digits",
                     number: e.currentTarget.textContent,
                   });
                 }}
