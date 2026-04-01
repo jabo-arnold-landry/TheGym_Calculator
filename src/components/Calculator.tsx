@@ -97,7 +97,21 @@ export default function Calculator() {
             operand: handleOperations(state),
           };
         }
+        break;
+      case "addingBooleanoperator":
+        if (state.currValue == null && state.operand == null) return state;
+        if (state.operand.startsWith("-")) {
+          return {
+            ...state,
+            operand: Math.abs(parseInt(state.operand)),
+          };
+        }
+        return {
+          ...state,
+          operand: `-${state.operand}`,
+        };
 
+      default:
         return {
           ...state,
           currValue: handleOperations(state),
@@ -130,6 +144,11 @@ export default function Calculator() {
                   if (e.currentTarget.value === "=")
                     return dispatch({
                       type: "equals",
+                    });
+
+                  if (e.currentTarget.value === "+/-")
+                    return dispatch({
+                      type: "addingBooleanoperator",
                     });
 
                   const regex = /([\W])/gm;
