@@ -85,6 +85,18 @@ export default function Calculator() {
             operand: null,
           };
         }
+        break;
+
+      case "equals":
+        if (state.currValue == null && state.operand == null) return state;
+        if (state.currValue !== null && state.operand !== null) {
+          return {
+            ...state,
+            currValue: null,
+            operation: null,
+            operand: handleOperations(state),
+          };
+        }
 
         return {
           ...state,
@@ -113,6 +125,11 @@ export default function Calculator() {
                   if (e.currentTarget.value === "AC")
                     return dispatch({
                       type: "clear",
+                    });
+
+                  if (e.currentTarget.value === "=")
+                    return dispatch({
+                      type: "equals",
                     });
 
                   const regex = /([\W])/gm;
