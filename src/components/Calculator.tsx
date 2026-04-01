@@ -36,7 +36,6 @@ const numbers = [
 ];
 
 export default function Calculator() {
-  
   function handleOperations({ currValue, operation, operand }: InputType) {
     const numOne = parseInt(currValue);
     const numTwo = parseInt(operand);
@@ -112,7 +111,13 @@ export default function Calculator() {
             operand: null,
           };
         }
-        break;
+
+        return {
+          ...state,
+          currValue: handleOperations(state),
+          operation: action.value,
+          operand: null,
+        };
 
       case "equals":
         if (state.currValue == null && state.operand == null) return state;
@@ -124,7 +129,7 @@ export default function Calculator() {
             operand: handleOperations(state),
           };
         }
-        break;
+        return state;
 
       case "addingBooleanoperator":
         if (state.currValue == null && state.operand == null) return state;
@@ -138,25 +143,18 @@ export default function Calculator() {
           ...state,
           operand: `-${state.operand}`,
         };
-
-      default:
-        return {
-          ...state,
-          currValue: handleOperations(state),
-          operation: action.value,
-          operand: null,
-        };
     }
   }
-  const [{ currValue, operation, operand }, dispatch] = useReducer(reduce, {});
+  const [{ currValue, operation, operand }, dispatch] = useReducer(reduce, {
+    currValue: null,
+    operation: null,
+    operand: null,
+  });
   return (
     <>
       <main>
         <div className="numbers">
           <div className="output">
-            <div className="firstvalue-operand">
-              {currValue} <span>{operation}</span>
-            </div>
             <div className="currvalue-operand">{operand}</div>
           </div>
 
