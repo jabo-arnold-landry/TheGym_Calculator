@@ -39,20 +39,11 @@ export default function Calculator() {
   function reduce(state: InputType, action: ActionType) {
     switch (action.type) {
       case "add-digits":
-        const values = action.value;
-        if (values === "0" && state.operand === "0") return state;
-        if (values === "." && state.operand.includes(".")) return state;
+        if (action.value === "0" && state.operand === "0") return state;
+        if (action.value === "." && state.operand.includes(".")) return state;
         return {
           ...state,
-          operand: `${state.operand ?? ""}${values}`,
-        };
-        
-      case "operations":
-        return {
-          ...state,
-          operation: action.value,
-          currValue: state.operand,
-          operand: "",
+          operand: `${state.operand ?? ""}${action.value}`,
         };
 
       case "clear":
@@ -61,6 +52,17 @@ export default function Calculator() {
           operand: "",
           operation: "",
         };
+
+      case "operations":
+        if (state.currValue == null && state.operand == null) return state;
+        if (state.currValue == null) {
+          return {
+            ...state,
+            currValue: state.operand,
+            operation: action.value,
+            operand: null,
+          };
+        }
     }
   }
   const [{ currValue, operation, operand }, dispatch] = useReducer(reduce, {});
@@ -70,7 +72,7 @@ export default function Calculator() {
         <div className="numbers">
           <div className="output">
             <div className="firstvalue-operand">
-              {currValue} {operation}
+              {currValue} <span>{operation}</span>
             </div>
             <div className="currvalue-operand">{operand}</div>
           </div>
@@ -79,21 +81,21 @@ export default function Calculator() {
             return (
               <Button
                 onClick={(e) => {
-                  if (e.currentTarget.textContent === "AC")
+                  if (e.currentTarget.value === "AC")
                     return dispatch({
                       type: "clear",
                     });
-                  const regex = /([\/\+\-\*\=])/gm;
-                  const isValidDigitElemen = regex.test(
-                    e.currentTarget.textContent,
-                  );
+
+                  const regex = /([\W])/gm;
+                  const isValidDigitElement = regex.test(e.currentTarget.value);
+
                   dispatch({
-                    type: isValidDigitElemen ? "operations" : "add-digits",
-                    value: e.currentTarget.textContent,
+                    type: isValidDigitElement ? "operations" : "add-digits",
+                    value: e.currentTarget.value,
                   });
                 }}
                 key={index}
-                value={number}
+                value={number === "x" ? "*" : number}
                 className={clsx(number === "0" && "zero")}
               >
                 {number}
