@@ -1,7 +1,9 @@
 .numbers {
   display: grid;
   gap: 1px;
-  grid-template-columns: repeat(4, 60px);
+  grid-template-columns: repeat(4, 100px);
+  justify-content: center;
+  align-content: center;
   grid-template-rows: repeat(4, 70px);
 }
 .zero {
@@ -14,7 +16,7 @@ button {
   border-collapse: collapse;
   border: none;
   background-color: rgb(220, 224, 220);
-  font-size: 1rem;
+  font-size: 1.6rem;
 }
 button:is(:hover, :focus-visible) {
   background-color: rgb(197, 202, 197);
@@ -32,4 +34,12 @@ button:is(:hover, :focus-visible) {
 .currvalue-operand {
   padding: 0.9rem 0.2rem;
   font-size: 2rem;
+}
+.operations {
+  background-color: rgba(245, 72, 10, 0.9);
+  color: white;
+}
+.operations:is(:hover, :focus-visible) {
+  transition: all 0.2s ease-in-out;
+  background-color: rgb(245, 129, 87);
 }
