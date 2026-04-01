@@ -36,6 +36,7 @@ const numbers = [
 ];
 
 export default function Calculator() {
+  
   function handleOperations({ currValue, operation, operand }: InputType) {
     const numOne = parseInt(currValue);
     const numTwo = parseInt(operand);
@@ -58,6 +59,32 @@ export default function Calculator() {
         return alert("invalid inputs");
     }
   }
+
+  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    if (e.currentTarget.value === "AC")
+      return dispatch({
+        type: "clear",
+      });
+
+    if (e.currentTarget.value === "=")
+      return dispatch({
+        type: "equals",
+      });
+
+    if (e.currentTarget.value === "+/-")
+      return dispatch({
+        type: "addingBooleanoperator",
+      });
+
+    const regex = /([\W])/gm;
+    const isValidDigitElement = regex.test(e.currentTarget.value); // this regex returns a boolean value ,which I  use to decide if a certain value is a number or a special character if it is a special character I make it an operations and when it is not I make it an add-digits.
+
+    dispatch({
+      type: isValidDigitElement ? "operations" : "add-digits",
+      value: e.currentTarget.value,
+    });
+  }
+
   function reduce(state: InputType, action: ActionType) {
     switch (action.type) {
       case "add-digits":
@@ -98,6 +125,7 @@ export default function Calculator() {
           };
         }
         break;
+
       case "addingBooleanoperator":
         if (state.currValue == null && state.operand == null) return state;
         if (state.operand.startsWith("-")) {
@@ -135,30 +163,7 @@ export default function Calculator() {
           {numbers.map((number, index) => {
             return (
               <Button
-                onClick={(e) => {
-                  if (e.currentTarget.value === "AC")
-                    return dispatch({
-                      type: "clear",
-                    });
-
-                  if (e.currentTarget.value === "=")
-                    return dispatch({
-                      type: "equals",
-                    });
-
-                  if (e.currentTarget.value === "+/-")
-                    return dispatch({
-                      type: "addingBooleanoperator",
-                    });
-
-                  const regex = /([\W])/gm;
-                  const isValidDigitElement = regex.test(e.currentTarget.value);
-
-                  dispatch({
-                    type: isValidDigitElement ? "operations" : "add-digits",
-                    value: e.currentTarget.value,
-                  });
-                }}
+                onClick={handleClick}
                 key={index}
                 value={number === "x" ? "*" : number}
                 className={clsx(number === "0" && "zero")}
