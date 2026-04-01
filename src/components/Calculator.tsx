@@ -36,6 +36,28 @@ const numbers = [
 ];
 
 export default function Calculator() {
+  function handleOperations({ currValue, operation, operand }: InputType) {
+    const numOne = parseInt(currValue);
+    const numTwo = parseInt(operand);
+    switch (operation) {
+      case "+":
+        return numOne + numTwo;
+
+      case "-":
+        return numOne - numTwo;
+
+      case "/":
+        return numOne / numTwo;
+
+      case "*":
+        return numOne * numTwo;
+
+      case "%":
+        return numOne % numTwo;
+      default:
+        return alert("invalid inputs");
+    }
+  }
   function reduce(state: InputType, action: ActionType) {
     switch (action.type) {
       case "add-digits":
@@ -63,6 +85,13 @@ export default function Calculator() {
             operand: null,
           };
         }
+
+        return {
+          ...state,
+          currValue: handleOperations(state),
+          operation: action.value,
+          operand: null,
+        };
     }
   }
   const [{ currValue, operation, operand }, dispatch] = useReducer(reduce, {});
