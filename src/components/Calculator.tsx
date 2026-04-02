@@ -156,7 +156,7 @@ export default function Calculator() {
         };
     }
   }
-  const [{ operand }, dispatch] = useReducer(reduce, {
+  const [{ operand, currValue }, dispatch] = useReducer(reduce, {
     currValue: null,
     operation: null,
     operand: null,
@@ -166,6 +166,7 @@ export default function Calculator() {
       <main>
         <div className="numbers">
           <div className="output">
+            <div>{currValue}</div>
             <div className="currvalue-operand">{operand}</div>
           </div>
 
