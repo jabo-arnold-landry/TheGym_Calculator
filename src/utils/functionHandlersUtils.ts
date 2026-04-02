@@ -2,7 +2,6 @@ import { type InputType, type ActionType } from "../types";
 import { type Dispatch } from "react";
 
 function handleOperations({ currValue, operation, operand }: InputType) {
-
   const numOne = parseInt(currValue);
   const numTwo = parseInt(operand);
   switch (operation) {
@@ -30,7 +29,6 @@ export function handleClick(
   e: React.MouseEvent<HTMLButtonElement>,
   dispatch: Dispatch<ActionType>,
 ) {
-
   if (e.currentTarget.value === "AC")
     return dispatch({
       type: "clear",
@@ -41,9 +39,15 @@ export function handleClick(
       type: "equals",
     });
 
-  if (e.currentTarget.value === "+/-")
+  if (e.currentTarget.value === "-/+")
     return dispatch({
       type: "addingBooleanoperator",
+    });
+
+  if (e.currentTarget.value === ".")
+    return dispatch({
+      type: "add-digits",
+      value: e.currentTarget.value,
     });
 
   const regex = /([\W])/gm;
@@ -56,10 +60,9 @@ export function handleClick(
 }
 
 export function handleReducerActions(state: InputType, action: ActionType) {
-  
   switch (action.type) {
     case "add-digits":
-      if (action.value === "0" && state.operand === "0") return state;
+      if (action.value === "0" && state.operand === "") return state;
       if (action.value === "." && state.operand.includes(".")) return state;
       return {
         ...state,
