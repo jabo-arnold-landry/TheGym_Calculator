@@ -51,8 +51,11 @@ button:is(:hover, :focus-visible) {
 }
 
 .currvalue-operand {
-  padding: 0.9rem 0.2rem;
-  font-size: 2rem;
+  padding: 0.3rem 0.2rem;
+  font-size: 1.6rem;
+}
+.operand {
+  font-size: 1.5rem;
 }
 .operations {
   background-color: rgba(245, 72, 10, 0.9);

@@ -18,10 +18,8 @@ export default function Calculator() {
       <main>
         <div className="numbers">
           <div className="output">
-            <div>{currValue}</div>
-            <div className="currvalue-operand">
-              {operand == null ? "0" : operand}
-            </div>
+            <div className="currvalue-operand">{currValue}</div>
+            <div className="operand">{operand == null ? "0" : operand}</div>
           </div>
 
           {keyPad.map((pad, index) => {
