@@ -1,3 +1,21 @@
+html {
+  color-scheme: light dark;
+}
+
+:root {
+  --text-color: light-dark(black, white);
+  --bg-color: light-dark(hsl(50, 7%, 84%), rgb(179, 179, 179));
+  --btn-bg-color: light-dark(rgb(186, 186, 186), rgb(96, 96, 96));
+}
+body {
+  background-color: var(--bg-color);
+}
+
+main {
+  align-content: center;
+  justify-items: center;
+}
+
 .numbers {
   display: grid;
   gap: 1px;
@@ -15,8 +33,9 @@ button {
   padding: 0.7rem 0.3rem;
   border-collapse: collapse;
   border: none;
-  background-color: rgb(220, 224, 220);
+  background-color: var(--btn-bg-color);
   font-size: 1.6rem;
+  color: var(--text-color);
 }
 button:is(:hover, :focus-visible) {
   background-color: rgb(197, 202, 197);
