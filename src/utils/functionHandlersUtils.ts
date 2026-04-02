@@ -2,8 +2,9 @@ import { type InputType, type ActionType } from "../types";
 import { type Dispatch } from "react";
 
 function handleOperations({ currValue, operation, operand }: InputType) {
-  const numOne = parseInt(currValue);
-  const numTwo = parseInt(operand);
+  const numOne = Number(currValue);
+  const numTwo = Number(operand);
+  
   switch (operation) {
     case "+":
       return numOne + numTwo;
@@ -62,6 +63,11 @@ export function handleClick(
 export function handleReducerActions(state: InputType, action: ActionType) {
   switch (action.type) {
     case "add-digits":
+      if (
+        (action.value === "." && state.operand == null) ||
+        state.operand == ""
+      )
+        return state;
       if (action.value === "0" && state.operand === "") return state;
       if (action.value === "." && state.operand.includes(".")) return state;
       return {
