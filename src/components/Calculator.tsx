@@ -8,9 +8,9 @@ import {
 
 export default function Calculator() {
   const [{ operand, currValue }, dispatch] = useReducer(handleReducerActions, {
-    currValue: null,
-    operation: null,
-    operand: null,
+    currValue: "",
+    operation: "",
+    operand: "",
   });
 
   return (
@@ -19,9 +19,7 @@ export default function Calculator() {
         <div className="numbers">
           <div className="output">
             <div className="currvalue-operand">{currValue}</div>
-            <div className="operand">
-              {operand == null || operand == "" ? "0" : operand}
-            </div>
+            <div className="operand">{operand == "" ? "0" : operand}</div>
           </div>
 
           {keyPad.map((pad, index) => {

@@ -1,10 +1,14 @@
 import { type InputType, type ActionType } from "../types";
 import { type Dispatch } from "react";
 
-function handleOperations({ currValue, operation, operand }: InputType) {
+function handleOperations({
+  currValue,
+  operation,
+  operand,
+}: InputType): number {
   const numOne = Number(currValue);
   const numTwo = Number(operand);
-  
+
   switch (operation) {
     case "+":
       return numOne + numTwo;
@@ -22,7 +26,7 @@ function handleOperations({ currValue, operation, operand }: InputType) {
       return numOne % numTwo;
 
     default:
-      return alert("invalid inputs");
+      return 0;
   }
 }
 
@@ -63,13 +67,11 @@ export function handleClick(
 export function handleReducerActions(state: InputType, action: ActionType) {
   switch (action.type) {
     case "add-digits":
-      if (
-        (action.value === "." && state.operand == null) ||
-        state.operand == ""
-      )
+      if (action.value === "." && state.operand == "" && state.operand == "")
         return state;
       if (action.value === "0" && state.operand === "") return state;
       if (action.value === "." && state.operand.includes(".")) return state;
+
       return {
         ...state,
         operand: `${state.operand ?? ""}${action.value}`,
@@ -83,13 +85,13 @@ export function handleReducerActions(state: InputType, action: ActionType) {
       };
 
     case "operations":
-      if (state.currValue == null && state.operand == null) return state;
-      if (state.currValue == null) {
+      if (state.currValue == "" && state.operand == "") return state;
+      if (state.currValue == "") {
         return {
           ...state,
           currValue: state.operand,
           operation: action.value,
-          operand: null,
+          operand: "",
         };
       }
 
@@ -97,23 +99,23 @@ export function handleReducerActions(state: InputType, action: ActionType) {
         ...state,
         currValue: handleOperations(state),
         operation: action.value,
-        operand: null,
+        operand: "",
       };
 
     case "equals":
-      if (state.currValue == null && state.operand == null) return state;
-      if (state.currValue !== null && state.operand !== null) {
+      if (state.currValue == "" && state.operand == "") return state;
+      if (state.currValue !== "" && state.operand !== "") {
         return {
           ...state,
-          currValue: null,
-          operation: null,
+          currValue: "",
+          operation: "",
           operand: handleOperations(state),
         };
       }
       return state;
 
     case "addingBooleanoperator":
-      if (state.currValue == null && state.operand == null) return state;
+      if (state.currValue == "" && state.operand == "") return state;
       if (state.operand.startsWith("-")) {
         return {
           ...state,
