@@ -104,15 +104,13 @@ export function handleReducerActions(state: InputType, action: ActionType) {
 
     case "equals":
       if (state.currValue == "" && state.operand == "") return state;
-      if (state.currValue !== "" && state.operand !== "") {
-        return {
-          ...state,
-          currValue: "",
-          operation: "",
-          operand: handleOperations(state),
-        };
-      }
-      return state;
+
+      return {
+        ...state,
+        currValue: "",
+        operation: "",
+        operand: handleOperations(state),
+      };
 
     case "addingBooleanoperator":
       if (state.currValue == "" && state.operand == "") return state;
