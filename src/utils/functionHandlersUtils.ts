@@ -71,6 +71,13 @@ export function handleReducerActions(state: InputType, action: ActionType) {
         return state;
       if (action.value === "0" && state.operand === "") return state;
       if (action.value === "." && state.operand.includes(".")) return state;
+      if (state.override) {
+        return {
+          ...state,
+          operand: action.value,
+          override: false,
+        };
+      }
 
       return {
         ...state,
@@ -86,6 +93,12 @@ export function handleReducerActions(state: InputType, action: ActionType) {
 
     case "operations":
       if (state.currValue == "" && state.operand == "") return state;
+      if (state.operand == "") {
+        return {
+          ...state,
+          operation: action.value,
+        };
+      }
       if (state.currValue == "") {
         return {
           ...state,
@@ -110,6 +123,7 @@ export function handleReducerActions(state: InputType, action: ActionType) {
         currValue: "",
         operation: "",
         operand: handleOperations(state),
+        override: true,
       };
 
     case "addingBooleanoperator":
