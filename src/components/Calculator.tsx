@@ -1,102 +1,39 @@
 import Button from "./UI/Button";
-import { clsx } from "clsx";
 import { useReducer } from "react";
-import { type Str } from "../types";
-interface InputType {
-  currValue: Str;
-  operation: Str;
-  operand: Str;
-}
-
-interface ActionType {
-  type: Str;
-  value?: Str;
-}
-
-const numbers = [
-  "AC",
-  "+/-",
-  "%",
-  "/",
-  "7",
-  "8",
-  "9",
-  "x",
-  "4",
-  "5",
-  "6",
-  "-",
-  "1",
-  "2",
-  "3",
-  "+",
-  "0",
-  ".",
-  "=",
-];
+import { keyPad } from "../utils/data";
+import {
+  handleClick,
+  handleReducerActions,
+} from "../utils/functionHandlersUtils";
 
 export default function Calculator() {
-  function reduce(state: InputType, action: ActionType) {
-    switch (action.type) {
-      case "add-digits":
-        const values = action.value;
-        if (values === "0" && state.operand === "0") return state;
-        if (values === "." && state.operand.includes(".")) return state;
-        return {
-          ...state,
-          operand: `${state.operand ?? ""}${values}`,
-        };
-        
-      case "operations":
-        return {
-          ...state,
-          operation: action.value,
-          currValue: state.operand,
-          operand: "",
-        };
+  const [{ operand, currValue }, dispatch] = useReducer(handleReducerActions, {
+    currValue: "",
+    operation: "",
+    operand: "",
+  });
 
-      case "clear":
-        return {
-          currValue: "",
-          operand: "",
-          operation: "",
-        };
-    }
-  }
-  const [{ currValue, operation, operand }, dispatch] = useReducer(reduce, {});
   return (
     <>
       <main>
         <div className="numbers">
           <div className="output">
-            <div className="firstvalue-operand">
-              {currValue} {operation}
-            </div>
-            <div className="currvalue-operand">{operand}</div>
+            <div className="currvalue-operand">{currValue}</div>
+            <div className="operand">{operand == "" ? "0" : operand}</div>
           </div>
 
-          {numbers.map((number, index) => {
+          {keyPad.map((pad, index) => {
+            const { clsname, key } = pad;
             return (
               <Button
                 onClick={(e) => {
-                  if (e.currentTarget.textContent === "AC")
-                    return dispatch({
-                      type: "clear",
-                    });
-                  const regex = /([\/\+\-\*\=])/gm;
-                  const isValidDigitElemen = regex.test(
-                    e.currentTarget.textContent,
-                  );
-                  dispatch({
-                    type: isValidDigitElemen ? "operations" : "add-digits",
-                    value: e.currentTarget.textContent,
-                  });
+                  handleClick(e, dispatch);
                 }}
                 key={index}
-                value={number}
-                className={clsx(number === "0" && "zero")}
+                value={key === "x" ? "*" : key}
+                className={clsname}
               >
-                {number}
+                {key}
               </Button>
             );
           })}

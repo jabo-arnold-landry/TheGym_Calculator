@@ -1,3 +1,10 @@
-export type UnknowObj = Record<string, unknown>;
-export type Str = string
-export type Nbr = Number
+export interface InputType {
+  currValue: string;
+  operation: string;
+  operand: string;
+  override?:boolean
+}
+export interface ActionType {
+  type: string;
+  value?: string;
+}

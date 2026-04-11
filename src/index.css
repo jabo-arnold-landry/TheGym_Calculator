@@ -1,6 +1,28 @@
+html {
+  color-scheme: light dark;
+}
+
+:root {
+  --text-color: light-dark(black, white);
+  --bg-color: light-dark(hsl(50, 7%, 84%), rgb(179, 179, 179));
+  --btn-bg-color: light-dark(rgb(186, 186, 186), rgb(96, 96, 96));
+}
+body {
+  background-color: var(--bg-color);
+}
+
+main {
+  align-content: center;
+  justify-items: center;
+}
+
 .numbers {
   display: grid;
-  grid-template-columns: repeat(4, 60px);
+  gap: 1px;
+  grid-template-columns: repeat(4, 100px);
+  justify-content: center;
+  align-content: center;
+  grid-template-rows: repeat(4, 70px);
 }
 .zero {
   grid-column: span 2;
@@ -9,11 +31,37 @@
 button {
   text-align: center;
   padding: 0.7rem 0.3rem;
+  border-collapse: collapse;
+  border: none;
+  background-color: var(--btn-bg-color);
+  font-size: 1.6rem;
+  color: var(--text-color);
+}
+button:is(:hover, :focus-visible) {
+  background-color: rgb(197, 202, 197);
 }
 .output {
-  grid-column: span 4;
+  grid-column: 1/-1;
+  grid-row: 1;
   text-align: right;
-  background-color: rgb(174, 168, 168);
+  background-color: rgb(110, 110, 110);
+  color: white;
   padding: 0.1em 0.9em;
   word-break: break-all;
+}
+
+.currvalue-operand {
+  padding: 0.3rem 0.2rem;
+  font-size: 1.6rem;
+}
+.operand {
+  font-size: 1.5rem;
+}
+.operations {
+  background-color: rgba(245, 72, 10, 0.9);
+  color: white;
+}
+.operations:is(:hover, :focus-visible) {
+  transition: all 0.2s ease-in-out;
+  background-color: rgb(245, 129, 87);
 }
